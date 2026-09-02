@@ -105,16 +105,30 @@ def run_pipeline(
             "hba1c": hba1c,
             "diabetes_duration_years": diabetes_duration_years
         })
+        mock_dr = {
+            "grade": 0,
+            "probabilities": {"0": 1.0, "1": 0.0, "2": 0.0, "3": 0.0, "4": 0.0},
+            "gradcam_path": ""
+        }
+        mock_rel = {
+            "confidence": 0.0,
+            "confidence_level": "LOW",
+            "uncertainty": 1.0,
+            "uncertainty_level": "HIGH",
+            "ood": True,
+            "ood_status": "out-of-distribution",
+            "reason": "Image is ungradable."
+        }
         final_decision = make_final_decision(
             quality_result=quality_result,
-            dr_result={},  
-            reliability_result={},
+            dr_result=mock_dr,  
+            reliability_result=mock_rel,
             clinical_context=clinical_result
         )
         return {
             "quality": quality_result,
-            "dr_result": None,
-            "reliability": None,
+            "dr_result": mock_dr,
+            "reliability": mock_rel,
             "clinical_context": clinical_result,
             "final_decision": final_decision
         }
