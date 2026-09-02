@@ -40,6 +40,11 @@ def img_to_base64(img_path: str) -> str:
         print(f"Error encoding image {img_path}: {e}")
         return ""
 
+@app.errorhandler(Exception)
+def handle_exception(e):
+    import traceback
+    return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
+
 @app.route("/")
 def index():
     return render_template("index.html")
